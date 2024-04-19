@@ -34,7 +34,7 @@ Clue.init(
     },
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       referemces: {
         model: 'user',
         key: 'id',

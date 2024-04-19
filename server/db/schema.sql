@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS meow_db;
+CREATE DATABASE meow_db;

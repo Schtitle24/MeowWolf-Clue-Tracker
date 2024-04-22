@@ -96,15 +96,15 @@ const resolvers = {
         throw new Error('Failed to delete user');
       }
     },
-    addClue: async (_, { description, category, exhibitId, userId }) => {
-      try {
-        const clue = await Clue.create({ description, category, exhibitId, userId });
-        return clue;
-      } catch (error) {
-        throw new Error('Failed to add clue');
-      }
-    },
+   addClue: async (_, { description, category, exhibitId, userId }) => {
+    try {
+      const clue = await Clue.create({ description, category, exhibitId, userId });
+      return clue;
+    } catch (error) {
+      throw new Error('Failed to add clue');
+    }
   },
+},
     deleteClue: async (_, { id }) => {
       try {
         const clue = await Clue.findByPk(id);
@@ -117,7 +117,6 @@ const resolvers = {
         throw new Error('Failed to delete clue');
       }
     },
-  },
-};
+  };
 
 module.exports = resolvers;

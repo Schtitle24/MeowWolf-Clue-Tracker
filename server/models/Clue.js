@@ -1,3 +1,4 @@
+// Clue Model
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
@@ -19,24 +20,19 @@ Clue.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    status: {
-      type: DataTypes.ENUM('solved', 'Unsolved'),
-      defaultValue: 'Unsolved',
-      allowNull: false,
-    },
-    exhibitID: {
+    exhibitId: { 
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'exhibit',
+        model: 'exhibits',
         key: 'id',
       },
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      referemces: {
-        model: 'user',
+      references: {
+        model: 'User', 
         key: 'id',
       },
     },
@@ -48,6 +44,5 @@ Clue.init(
     modelName: 'clue',
   }
 );
-
 
 module.exports = Clue;

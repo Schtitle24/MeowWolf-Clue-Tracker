@@ -1,14 +1,30 @@
-const { Clue, Exhibit, Interaction, User } = require('../models');
-const { signToken, AuthenicationError } = require('../utils/auth');
+const { Clue, Exhibit, User } = require('../models');
+const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
+    users: async () => {
+      try {
+        const users = await User.findAll();
+        return users;
+      } catch (error) {
+        throw new Error('Failed to fetch users');
+      }
+    },
     user: async (_, { id }) => {
       try {
         const user = await User.findByPk(id);
         return user;
       } catch (error) {
         throw new Error('Failed to fetch user');
+      }
+    },
+    clues: async () => {
+      try {
+        const clues = await Clue.findAll();
+        return clues;
+      } catch (error) {
+        throw new Error('Failed to fetch clues');
       }
     },
     clue: async (_, { id }) => {
@@ -25,6 +41,14 @@ const resolvers = {
         return clues;
       } catch (error) {
         throw new Error('Failed to fetch user clues');
+      }
+    },
+    exhibits: async () => {
+      try {
+        const exhibits = await Exhibit.findAll();
+        return exhibits;
+      } catch (error) {
+        throw new Error('Failed to fetch exhibits');
       }
     },
     exhibit: async (_, { id }) => {
@@ -45,6 +69,33 @@ const resolvers = {
         throw new Error('Failed to add user');
       }
     },
+    updateUser: async (_, { id, username, email, password }) => {
+      try {
+        const user = await User.findByPk(id);
+        if (!user) {
+          throw new Error('User not found');
+        }
+        user.username = username || user.username;
+        user.email = email || user.email;
+        user.password = password || user.password;
+        await user.save();
+        return user;
+      } catch (error) {
+        throw new Error('Failed to update user');
+      }
+    },
+    deleteUser: async (_, { id }) => {
+      try {
+        const user = await User.findByPk(id);
+        if (!user) {
+          throw new Error('User not found');
+        }
+        await user.destroy();
+        return user;
+      } catch (error) {
+        throw new Error('Failed to delete user');
+      }
+    },
     addClue: async (_, { description, category, exhibitId, userId }) => {
       try {
         const clue = await Clue.create({ description, category, exhibitId, userId });
@@ -53,19 +104,7 @@ const resolvers = {
         throw new Error('Failed to add clue');
       }
     },
-    updateClueStatus: async (_, { id, status }) => {
-      try {
-        const clue = await Clue.findByPk(id);
-        if (!clue) {
-          throw new Error('Clue not found');
-        }
-        clue.status = status;
-        await clue.save();
-        return clue;
-      } catch (error) {
-        throw new Error('Failed to update clue status');
-      }
-    },
+  },
     deleteClue: async (_, { id }) => {
       try {
         const clue = await Clue.findByPk(id);
@@ -76,19 +115,6 @@ const resolvers = {
         return clue;
       } catch (error) {
         throw new Error('Failed to delete clue');
-      }
-    },
-    markClueAsSolved: async (_, { id }) => {
-      try {
-        const clue = await Clue.findByPk(id);
-        if (!clue) {
-          throw new Error('Clue not found');
-        }
-        clue.status = 'SOLVED';
-        await clue.save();
-        return clue;
-      } catch (error) {
-        throw new Error('Failed to mark clue as solved');
       }
     },
   },

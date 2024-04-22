@@ -4,7 +4,6 @@ const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
 const { authMiddleware } = require('./utils/auth');
 const db = require('./models');
-
 const { typeDefs, resolvers } = require('./schema');
 
 const PORT = process.env.PORT || 3001;
